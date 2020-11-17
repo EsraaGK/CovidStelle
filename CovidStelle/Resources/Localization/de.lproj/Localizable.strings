@@ -1,0 +1,36 @@
+/* 
+  Localizable.strings
+  CovidStelle
+
+  Created by EsraaGK on 11/13/20.
+  
+*/
+
+
+"comman_instructions_1" = "Abstand halten";
+"comman_instructions_4" = "Eine Maske tragen";
+"comman_instructions_3" = "Wasch deine Hände";
+"comman_instructions_2" = "Lufträume regelmäßig";
+
+"notification_message" = "Überprüfen Sie das neueste Update für Covid-19. \ n Die Anzahl der Inzidenzfälle pro 100.000 Einwohner beträgt ";
+
+"stay_safe" = "Bleib sicher";
+
+"green_state_1" = "Einschränkungen des persönlichen Kontakts im öffentlichen Raum, bei privaten Veranstaltungen (d. H. Hochzeiten usw.) mit maximal 100 Teilnehmern in geschlossenen Räumen und maximal 200 Teilnehmern im Freien.";
+
+"green_state_2" = "Das Tragen einer Maske ist obligatorisch, wenn (einschließlich, aber nicht beschränkt auf) die Nutzung öffentlicher Verkehrsmittel, Einkaufen, Essen und Trinken in Restaurants, Bars usw. und der Mindestabstand (1,5 m) nicht eingehalten werden kann.";
+
+"yellow_state_1" = "Private Feiern und Kontakte: nicht mehr als zwei Haushalte oder zehn Personen.";
+
+"yellow_state_2" = "Ausgangssperre und Verbot des Verkaufs sowie des Konsums von Alkohol im öffentlichen Raum ab 23:00 Uhr.";
+
+
+"red_state_1" = "Private Feiern und Kontakte: nicht mehr als 5 Haushalte oder fünf Personen.";
+"red_state_2" = "Ausgangssperre und Verbot des Verkaufs sowie des Konsums von Alkohol im öffentlichen Raum ab 22:00 Uhr auf dem ADDITONAL Signal for Bavaria.";
+
+
+"dark_state_1" = "Veranstaltungen (z. B. Clubtreffen, Sportveranstaltungen, kulturelle Veranstaltungen usw.) dürfen 50 Personen nicht überschreiten.";
+
+"dark_state_2" = "Schließung der Lebensmittel- / Gastronomie-Verkaufsstellen, Verbot des Alkoholverkaufs und des Alkoholkonsums an bestimmten öffentlichen Orten ab 21:00 Uhr.";
+
+"status.message" = "Befolgen Sie entsprechend dem aktuellen Status Ihres Standorts die folgenden Anweisungen.";
