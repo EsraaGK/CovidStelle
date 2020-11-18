@@ -35,3 +35,8 @@ going shopping, eating and drinking in restaurants, bars, etc. and in case minim
 specific public places form 21:00.";
 
 "status.message" = "According to the current state of your location please follow the following instructions.";
+
+"location_permissions" = "Location Permissions";
+"location_permissions_message" = "Please go to Settings and turn on location permissions";
+"settings" = "Settings";
+"cancel" = "Cancel";

@@ -22,8 +22,6 @@ class BackGroundTaskService {
             //This task is cast with processing request (BGProcessingTask)
             task.expirationHandler = {
                 task.setTaskCompleted(success: false)
-              //  self.viewModel.fetchCovidStatistics().invalidateAndCancel()
-            
             }
             
             self.viewModel.viewState.subscribe(onNext: { viewState in

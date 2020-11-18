@@ -10,7 +10,7 @@ import RxSwift
 import RxMoya
 import Moya
 
-extension NetworkManager: CovidStatisticsProtocol {
+extension NetworkManager: NetworkMangerProtocol {
     func getCovidStatisticsIn(longitude: Double, latitude: Double) -> Single<CovidStatistics> {
         return provider.rx.request(MultiTarget(CovidStatisticsRoute.cases7Per100k(longitude: longitude,
                                                                                   latitude: latitude)))

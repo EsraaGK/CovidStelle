@@ -39,7 +39,9 @@ class CovidStatisticsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.viewLoaded()
+        // viewModel.viewLoaded()
+        self.dataView.isHidden = true
+        self.statusImageView.isHidden = true
         bindStatusLabel()
         setCommonInstructions()
     }
@@ -56,6 +58,8 @@ class CovidStatisticsViewController: UIViewController {
                 self.showLoadingState()
             case .noInternet:
                 self.showNoInternetState()
+            case .requestLocationPermission:
+                self.requestAuthorization()
             }
         }).disposed(by: disposeBag)
     }
@@ -113,5 +117,30 @@ class CovidStatisticsViewController: UIViewController {
         self.dataView.isHidden = true
         self.statusImageView.isHidden = false
         self.statusImageView.image = UIImage(named: "error")
+    }
+    
+    private func requestAuthorization() {
+        
+        // initialise a pop up for using later
+        let alertController = UIAlertController(
+            title: NSLocalizedString(LocalizationStringKeys.locationPermissions.rawValue, comment: ""),
+            message: NSLocalizedString(LocalizationStringKeys.locationPermissionsMessage.rawValue, comment: ""),
+            preferredStyle: .alert)
+        let settingsAction = UIAlertAction(
+            title: NSLocalizedString(LocalizationStringKeys.settings.rawValue, comment: ""),
+            style: .default) { _ in
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: nil)
+            }
+        }
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString(LocalizationStringKeys.cancel.rawValue, comment: ""),
+            style: .default, handler: nil)
+        alertController.addAction(cancelAction)
+        alertController.addAction(settingsAction)
+        
+        self.present(alertController, animated: true, completion: nil)
     }
 }

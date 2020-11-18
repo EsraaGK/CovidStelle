@@ -8,6 +8,6 @@
 import Foundation
 import RxSwift
 
-protocol CovidStatisticsProtocol: class {
+public protocol NetworkMangerProtocol: class {
    func getCovidStatisticsIn(longitude: Double, latitude: Double) -> Single<CovidStatistics>
 }

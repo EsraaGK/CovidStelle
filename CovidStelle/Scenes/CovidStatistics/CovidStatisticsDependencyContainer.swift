@@ -9,21 +9,24 @@ import Foundation
 
 public class CovidStatisticsDependencyContainer {
     // MARK: - Properties
-    private let sharedNetworkManager: NetworkManager
-    private let sharedCovidStatisticsRepository: CovidStatisticsRepository
+    private let networkManager: NetworkManager
+    private let covidStatisticsRepository: CovidStatisticsRepository
+    private let userDefaultsManger: UserDefaultsManager
     public let sharedViewModel: CovidStatisticsViewModel
     
     // MARK: - Methods
     public init() {
-        sharedNetworkManager = NetworkManager.shared
-        sharedCovidStatisticsRepository = CovidStatisticsRepository(networkManger: sharedNetworkManager)
-        sharedViewModel = CovidStatisticsViewModel(covidStatisticsRepository: sharedCovidStatisticsRepository)
+        networkManager = NetworkManager.shared
+        userDefaultsManger = UserDefaultsManager()
+        covidStatisticsRepository = CovidStatisticsRepository(networkManger: networkManager,
+                                                              userDefaultsManger: userDefaultsManger)
+        sharedViewModel = CovidStatisticsViewModel(covidStatisticsRepository: covidStatisticsRepository)
     }
     
     func getCovidStatisticsView() -> CovidStatisticsViewController {
         CovidStatisticsViewController(viewModelFactory: self)
     }
-   
+    
 }
 
 extension CovidStatisticsDependencyContainer: ContentViewViewModelFactory {

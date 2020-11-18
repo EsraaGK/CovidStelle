@@ -8,11 +8,12 @@
 import Foundation
 import RxSwift
 import UIKit
+import CoreLocation
 
-public class CovidStatisticsViewModel: ObservableObject {
-
+public class CovidStatisticsViewModel: NSObject {
+    
     // MARK: - Properties
-    private let covidStatisticsRepository: CovidStatisticsRepository
+    private let covidStatisticsRepository: CovidStatisticsRepositoryProtocol
     
     private let _viewState = PublishSubject<ViewState>()
     public var viewState: Observable<ViewState> { return _viewState.asObservable() }
@@ -26,24 +27,30 @@ public class CovidStatisticsViewModel: ObservableObject {
     public let dataViewIsHidden = PublishSubject<Bool>()
     
     private let disposeBag = DisposeBag()
-    
+    private let locationManger = CLLocationManager()
     // MARK: - Methods
-    public init(covidStatisticsRepository: CovidStatisticsRepository) {
+    public init(covidStatisticsRepository: CovidStatisticsRepositoryProtocol) {
         self.covidStatisticsRepository = covidStatisticsRepository
+        
+        super.init()
+        locationManger.delegate = self
+        locationManger.desiredAccuracy = kCLLocationAccuracyBest
+        locationManger.requestWhenInUseAuthorization()
+        locationManger.startUpdatingLocation()
     }
     
     @objc
     public func fetchCovidStatistics() {
-        let location = LocationService.shared.getcurrentLocation()?.coordinate
+        let location = locationManger.location?.coordinate
         covidStatisticsRepository.getCovidStatisticsIn(longitude: location?.longitude ?? 0.0,
                                                        latitude: location?.latitude ?? 0.0)
             .subscribe(onSuccess: { covidStatistics in
                 if let newValue = covidStatistics.features?.first?.attributes?.cases7Per100k {
-                
-                let state = self.defineCurrentState(cases7Per100k: newValue)
-                self._viewState.onNext(.data(data: state))
-                self.updateStatusLabel(with: state)
-                self.saveLatestCovidRecord(value: newValue)
+                    
+                    let state = self.defineCurrentState(cases7Per100k: newValue)
+                    self._viewState.onNext(.data(data: state))
+                    self.updateStatusLabel(with: state)
+                    self.saveLatestCovidRecord(value: newValue)
                     
                 }
                 self.fireNotificationIfNeeded(with: covidStatistics.features?.first?.attributes?.cases7Per100k)
@@ -59,10 +66,10 @@ public class CovidStatisticsViewModel: ObservableObject {
            let newValue = value,
            oldValue != newValue {
             let state = self.defineCurrentState(cases7Per100k: newValue)
-           
+            
             NotificationService.shared.fireNotification(
                 state: state.firstInstruction + String(newValue))
-       
+            
         }
     }
     public func viewLoaded() {
@@ -86,16 +93,24 @@ public class CovidStatisticsViewModel: ObservableObject {
         if ConnectionCheck.isConnectedToNetwork() {
             fetchCovidStatistics()
         } else {
-           return
+            return
         }
     }
     
     private func saveLatestCovidRecord(value: Double?) {
-        UserDefaults.standard.set(value, forKey: AppConstString.latestCovidRecord.rawValue)
+        covidStatisticsRepository.saveLatestCovidRecord(value: value)
     }
     
     private func getLatestCovidRecord() -> Double? {
-        UserDefaults.standard.object(forKey: AppConstString.latestCovidRecord.rawValue) as? Double
+        covidStatisticsRepository.getLatestCovidRecord()
+    }
+    
+    private func saveFirstAppUse(value: Bool?) {
+        covidStatisticsRepository.saveFirstAppUse(value: value)
+    }
+    
+    private func getFirstAppUse() -> Bool? {
+        covidStatisticsRepository.getFirstAppUse()
     }
     
     private func defineCurrentState(cases7Per100k: Double) -> CovidState {
@@ -117,8 +132,30 @@ public class CovidStatisticsViewModel: ObservableObject {
     private func updateStatusLabel(with state: CovidState) {
         statusColor.onNext(state.color)
         statusLabel.onNext(NSLocalizedString(LocalizationStringKeys.statusMessage.rawValue, comment: "")
-            )
+        )
         firstInstructionLabel.onNext(state.firstInstruction)
         secondInstructionLabel.onNext(state.secondInstruction)
     }
+}
+
+extension CovidStatisticsViewModel: CLLocationManagerDelegate {
+    public func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let authorizationStatus = manager.authorizationStatus
+        switch authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
+            viewLoaded()
+        case .denied, .notDetermined, .restricted:
+            
+            if let getFirstAppUse = getFirstAppUse(), getFirstAppUse == false {
+                _viewState.onNext(.requestLocationPermission)
+            } else {
+                saveFirstAppUse(value: false)
+                return
+            }
+            
+        @unknown default:
+            break
+        }
+    }
+    
 }

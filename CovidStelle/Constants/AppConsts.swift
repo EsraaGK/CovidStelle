@@ -10,7 +10,7 @@ import UIKit
 public enum AppConstString: String {
     case bgTaskId = "com.covidStelle.getCovidStatistics" //BGTask Id
     case latestCovidRecord = "latest_covid_record" //userDefaults key
-    
+    case firstAppUse = "first_app_use" //userDefaults key
 }
 
 public enum LocalizationStringKeys: String {
@@ -28,6 +28,10 @@ public enum LocalizationStringKeys: String {
     case darkState1 = "dark_state_1"
     case darkState2 = "dark_state_2"
     case statusMessage = "status.message"
+    case locationPermissions = "location_permissions"
+    case locationPermissionsMessage = "location_permissions_message"
+    case settings = "settings"
+    case cancel = "cancel"
    //case staySafe = "Stay Safe"
 }
 
@@ -36,6 +40,7 @@ public enum ViewState {
     case error (message: String?)
     case data (data: CovidState)
     case loading
+    case requestLocationPermission
 }
 
 public enum CovidState {
