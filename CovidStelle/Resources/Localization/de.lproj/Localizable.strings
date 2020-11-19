@@ -34,3 +34,8 @@
 "dark_state_2" = "Schließung der Lebensmittel- / Gastronomie-Verkaufsstellen, Verbot des Alkoholverkaufs und des Alkoholkonsums an bestimmten öffentlichen Orten ab 21:00 Uhr.";
 
 "status.message" = "Befolgen Sie entsprechend dem aktuellen Status Ihres Standorts die folgenden Anweisungen.";
+
+"location_permissions" = "Standortberechtigungen";
+"location_permissions_message" = "Bitte gehen Sie zu Einstellungen und aktivieren Sie die Standortberechtigungen";
+"settings" = "Settings";
+"cancel" = "Abbrechen";

@@ -22,8 +22,6 @@ class BackGroundTaskService {
             //This task is cast with processing request (BGProcessingTask)
             task.expirationHandler = {
                 task.setTaskCompleted(success: false)
-              //  self.viewModel.fetchCovidStatistics().invalidateAndCancel()
-            
             }
             
             self.viewModel.viewState.subscribe(onNext: { viewState in
@@ -39,12 +37,10 @@ class BackGroundTaskService {
     
     func scheduleGetCovidStatistics() {
         let request = BGProcessingTaskRequest(identifier: AppConstString.bgTaskId.rawValue)
-        request.requiresNetworkConnectivity = true //Need to true if ur task need to network process.Defaults to false.
+        request.requiresNetworkConnectivity = true
         request.requiresExternalPower = false
-        //If we keep requiredExternalPower = true then it required device is connected to external power.
         
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 10 * 60) // fetch Image Count after 10 minute.
-        //Note :: EarliestBeginDate should not be set to too far into the future.
+        request.earliestBeginDate = Date(timeIntervalSinceNow: TimeInterval(AppConstInt.tenMinutes.rawValue))
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch (let error) {

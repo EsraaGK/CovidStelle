@@ -10,7 +10,7 @@ import UIKit
 public enum AppConstString: String {
     case bgTaskId = "com.covidStelle.getCovidStatistics" //BGTask Id
     case latestCovidRecord = "latest_covid_record" //userDefaults key
-    
+    case firstAppUse = "first_app_use" //userDefaults key
 }
 
 public enum LocalizationStringKeys: String {
@@ -28,47 +28,12 @@ public enum LocalizationStringKeys: String {
     case darkState1 = "dark_state_1"
     case darkState2 = "dark_state_2"
     case statusMessage = "status.message"
-   //case staySafe = "Stay Safe"
+    case locationPermissions = "location_permissions"
+    case locationPermissionsMessage = "location_permissions_message"
+    case settings = "settings"
+    case cancel = "cancel"
 }
 
-public enum ViewState {
-    case noInternet
-    case error (message: String?)
-    case data (data: CovidState)
-    case loading
-}
-
-public enum CovidState {
-    case green
-    case yellow
-    case red
-    case darkRed
-    
-    var color: UIColor {
-        switch self {
-        case .green: return .green
-        case .yellow: return .yellow
-        case .red: return .red
-        case .darkRed: return UIColor(red: 102, green: 0, blue: 0, alpha: 1)
-        }
-        
-    }
-    
-    var firstInstruction: String {
-        switch self {
-        case .green: return NSLocalizedString("green_state_1", comment: "")
-        case .yellow: return NSLocalizedString("yellow_state_1", comment: "")
-        case .red: return NSLocalizedString("red_state_1", comment: "")
-        case .darkRed: return NSLocalizedString("dark_state_1", comment: "")
-        }
-    }
-    
-    var secondInstruction: String {
-        switch self {
-        case .green: return NSLocalizedString("green_state_2", comment: "")
-        case .yellow: return NSLocalizedString("yellow_state_2", comment: "")
-        case .red: return NSLocalizedString("red_state_2", comment: "")
-        case .darkRed: return NSLocalizedString("dark_state_2", comment: "")
-        }
-    }
+enum AppConstInt: Int {
+    case tenMinutes = 600
 }
