@@ -52,7 +52,7 @@ class CovidStatisticsViewController: UIViewController {
             case .error(let message):
                 self.showErrorState()
                 print(message ?? "")
-            case .data/*(let data)*/:
+            case .data:
                 self.showDataState()
             case .loading:
                 self.showLoadingState()
@@ -97,7 +97,8 @@ class CovidStatisticsViewController: UIViewController {
         self.stopActivityIndicator()
         self.dataView.isHidden = true
         self.statusImageView.isHidden = false
-        self.statusImageView.image = UIImage(named: "no_internet")
+        self.statusImageView.image = #imageLiteral(resourceName: "no_internet")
+           // UIImage(named: "no_internet")
     }
     
     private func showDataState() {
@@ -116,11 +117,11 @@ class CovidStatisticsViewController: UIViewController {
         self.stopActivityIndicator()
         self.dataView.isHidden = true
         self.statusImageView.isHidden = false
-        self.statusImageView.image = UIImage(named: "error")
+        self.statusImageView.image = #imageLiteral(resourceName: "error")
+           // UIImage(named: "error")
     }
     
     private func requestAuthorization() {
-        
         // initialise a pop up for using later
         let alertController = UIAlertController(
             title: NSLocalizedString(LocalizationStringKeys.locationPermissions.rawValue, comment: ""),

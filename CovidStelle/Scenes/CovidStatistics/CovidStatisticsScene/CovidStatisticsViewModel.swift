@@ -47,7 +47,7 @@ public class CovidStatisticsViewModel: NSObject {
             .subscribe(onSuccess: { covidStatistics in
                 if let newValue = covidStatistics.features?.first?.attributes?.cases7Per100k {
                     
-                    let state = self.defineCurrentState(cases7Per100k: newValue)
+                    let state = CovidStateService().determineCurrentState(using: newValue)
                     self._viewState.onNext(.data(data: state))
                     self.updateStatusLabel(with: state)
                     self.saveLatestCovidRecord(value: newValue)
@@ -65,7 +65,7 @@ public class CovidStatisticsViewModel: NSObject {
         if let oldValue = self.getLatestCovidRecord(),
            let newValue = value,
            oldValue != newValue {
-            let state = self.defineCurrentState(cases7Per100k: newValue)
+            let state = CovidStateService().determineCurrentState(using: newValue)
             
             NotificationService.shared.fireNotification(
                 state: state.firstInstruction + String(newValue))
@@ -82,7 +82,7 @@ public class CovidStatisticsViewModel: NSObject {
     }
     
     public func scedualeForgroundUpdate() {
-        Timer.scheduledTimer(timeInterval: 10 * 60,
+        Timer.scheduledTimer(timeInterval: TimeInterval(AppConstInt.tenMinutes.rawValue),
                              target: self,
                              selector: #selector(self.excuteForgroundUpdate),
                              userInfo: nil,
@@ -111,22 +111,6 @@ public class CovidStatisticsViewModel: NSObject {
     
     private func getFirstAppUse() -> Bool? {
         covidStatisticsRepository.getFirstAppUse()
-    }
-    
-    private func defineCurrentState(cases7Per100k: Double) -> CovidState {
-        if 0..<35 ~= cases7Per100k {
-            return CovidState.green
-            
-        } else if 35..<50 ~= cases7Per100k {
-            return CovidState.yellow
-            
-        } else if 50..<100 ~= cases7Per100k {
-            return CovidState.red
-            
-        } else {
-            return CovidState.darkRed
-        }
-        
     }
     
     private func updateStatusLabel(with state: CovidState) {
